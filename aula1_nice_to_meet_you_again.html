@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 1 — Nice to meet you again!</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f5f4f0; color: #1a1a18; min-height: 100vh; padding: 24px 16px; }
+  .container { max-width: 780px; margin: 0 auto; }
+
+  /* colors */
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f4f0;
+    --bg3: #eceae4;
+    --text: #1a1a18;
+    --text2: #5a5a56;
+    --text3: #9a9a94;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --info-bg: #e6f1fb;
+    --info-text: #0c447c;
+    --success-bg: #eaf3de;
+    --success-text: #27500a;
+    --danger-bg: #fcebeb;
+    --danger-text: #791f1f;
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+
+  .lesson-header { padding: 1.5rem 0 1.25rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+  .eyebrow { font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 6px; }
+  h1 { font-size: 24px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: var(--text2); }
+
+  .info-block { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid #378add; border-radius: 0 var(--radius) var(--radius) 0; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+  .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 8px; margin-top: 8px; }
+  .schedule-item { font-size: 13px; color: var(--text2); }
+  .schedule-item strong { color: var(--text); display: block; }
+
+  .nav-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .ntab { font-size: 13px; padding: 7px 16px; border-radius: 20px; border: 1px solid var(--border2); background: transparent; color: var(--text2); cursor: pointer; transition: all .15s; }
+  .ntab.on { background: var(--bg); color: var(--text); border-color: #888; font-weight: 500; }
+  .ntab:hover { background: var(--bg3); }
+
+  .sec { display: none; }
+  .sec.show { display: block; }
+
+  .time-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 3px 10px; border-radius: 20px; background: var(--bg3); color: var(--text2); border: 1px solid var(--border); margin-bottom: 1rem; }
+  .block-label { font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; margin-top: 1.25rem; }
+  .block-label:first-child { margin-top: 0; }
+  .notes { font-size: 13px; color: var(--text2); line-height: 1.7; background: var(--bg3); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 1rem; }
+  .notes em { font-style: italic; color: var(--text); }
+
+  /* card */
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 12px; }
+
+  /* spy */
+  .spy-target { font-size: 14px; font-weight: 500; color: var(--text); padding: 10px 14px; background: var(--bg3); border-radius: var(--radius); margin-bottom: 10px; }
+  .scene-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .scene-btn { font-size: 13px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border2); background: var(--bg); color: var(--text2); cursor: pointer; }
+  .scene-btn:hover { background: var(--bg3); }
+  .spy-scene { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px,1fr)); gap: 8px; background: var(--bg3); border-radius: var(--radius-lg); padding: 1rem; min-height: 80px; }
+  .spy-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 6px; text-align: center; cursor: pointer; transition: all .15s; user-select: none; }
+  .spy-item:hover { border-color: #378add; }
+  .spy-item.found { border-color: #3b6d11; background: var(--success-bg); }
+  .spy-emoji { font-size: 26px; display: block; margin-bottom: 4px; }
+  .spy-word { font-size: 11px; color: var(--text2); display: none; }
+  .spy-item.found .spy-word { display: block; color: var(--success-text); font-weight: 500; }
+  .spy-score { font-size: 13px; color: var(--text3); text-align: center; margin-top: 8px; }
+
+  /* flashcards */
+  .cat-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .cf-btn { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border2); background: var(--bg); color: var(--text2); cursor: pointer; }
+  .cf-btn.on { border-color: #378add; background: var(--info-bg); color: var(--info-text); }
+  .fc-area { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .fc-card { width: 100%; max-width: 400px; min-height: 160px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; cursor: pointer; transition: border-color .15s; text-align: center; }
+  .fc-card:hover { border-color: #378add; }
+  .fc-tag { font-size: 11px; color: var(--text3); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 8px; }
+  .fc-word { font-size: 28px; font-weight: 500; color: var(--text); }
+  .fc-pt { font-size: 16px; color: var(--text2); margin-top: 10px; display: none; }
+  .fc-card.flipped .fc-pt { display: block; }
+  .fc-card.flipped .fc-word { color: #185fa5; }
+  .fc-hint { font-size: 12px; color: var(--text3); }
+  .fc-counter { font-size: 13px; color: var(--text3); }
+  .fc-controls { display: flex; gap: 8px; }
+
+  /* buttons */
+  button { font-family: inherit; cursor: pointer; }
+  .btn { font-size: 13px; padding: 7px 16px; border-radius: 20px; border: 1px solid var(--border2); background: var(--bg); color: var(--text2); cursor: pointer; transition: all .15s; }
+  .btn:hover { background: var(--bg3); }
+
+  /* grammar */
+  .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 10px; margin-bottom: 1.25rem; }
+  .ref-col { font-size: 13px; line-height: 2; color: var(--text2); background: var(--bg3); padding: 10px 14px; border-radius: var(--radius); }
+  .gap-list { display: flex; flex-direction: column; gap: 10px; }
+  .gap-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: .85rem 1rem; }
+  .gap-sentence { font-size: 15px; color: var(--text); margin-bottom: 8px; line-height: 1.8; }
+  .gap-input { border: 1px solid var(--border2); border-radius: var(--radius); padding: 4px 10px; font-size: 14px; color: var(--text); background: var(--bg); width: 80px; text-align: center; font-family: inherit; }
+  .gap-input:focus { outline: none; border-color: #378add; }
+  .gap-fb { font-size: 13px; margin-top: 6px; display: none; padding: 5px 10px; border-radius: var(--radius); }
+  .gap-fb.ok { background: var(--success-bg); color: var(--success-text); }
+  .gap-fb.no { background: var(--danger-bg); color: var(--danger-text); }
+  .check-btn { margin-top: 12px; }
+
+  /* true/false */
+  .tf-list { display: flex; flex-direction: column; gap: 10px; }
+  .tf-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: .85rem 1rem; }
+  .tf-sentence { font-size: 15px; color: var(--text); margin-bottom: 10px; font-style: italic; }
+  .tf-btns { display: flex; gap: 8px; }
+  .tf-btn { font-size: 13px; padding: 6px 18px; border-radius: 20px; border: 1px solid var(--border2); background: var(--bg); color: var(--text2); cursor: pointer; transition: all .15s; }
+  .tf-btn:hover { background: var(--bg3); }
+  .tf-result { font-size: 13px; margin-top: 8px; display: none; padding: 6px 10px; border-radius: var(--radius); }
+  .tf-result.correct { background: var(--success-bg); color: var(--success-text); }
+  .tf-result.wrong { background: var(--danger-bg); color: var(--danger-text); }
+  .tf-score { font-size: 13px; color: var(--text3); margin-top: 10px; }
+
+  /* exit ticket */
+  .exit-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+  .hint-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .hint-pill { font-size: 12px; color: var(--text3); padding: 3px 10px; background: var(--bg3); border-radius: 20px; }
+  textarea { width: 100%; border: 1px solid var(--border2); border-radius: var(--radius); padding: 10px 12px; font-size: 14px; color: var(--text); background: var(--bg); font-family: inherit; resize: vertical; min-height: 80px; }
+  textarea:focus { outline: none; border-color: #378add; }
+  textarea::placeholder { color: var(--text3); }
+
+  @media print {
+    .nav-tabs, .ntab { display: none !important; }
+    .sec { display: block !important; }
+    .card, .block-label { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="lesson-header">
+    <div class="eyebrow">Aula 1 · Revisão</div>
+    <h1>Nice to meet you again!</h1>
+    <div class="subtitle">Isabella (11 anos) &amp; Helena (12 anos) &nbsp;·&nbsp; 60 min &nbsp;·&nbsp; Grupo pequeno</div>
+  </div>
+
+  <div class="info-block">
+    <div class="eyebrow">Roteiro da aula</div>
+    <div class="schedule-grid">
+      <div class="schedule-item"><strong>5 min</strong> Warm-up: I spy</div>
+      <div class="schedule-item"><strong>15 min</strong> Flashcards de vocabulário</div>
+      <div class="schedule-item"><strong>20 min</strong> Gramática: to be + artigos</div>
+      <div class="schedule-item"><strong>15 min</strong> Jogo: True or False</div>
+      <div class="schedule-item"><strong>5 min</strong> Exit ticket</div>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="ntab on" onclick="show('spy',this)">&#128065; Warm-up</button>
+    <button class="ntab" onclick="show('flash',this)">&#128260; Flashcards</button>
+    <button class="ntab" onclick="show('grammar',this)">&#128216; Gramática</button>
+    <button class="ntab" onclick="show('tf',this)">&#127942; True or False</button>
+    <button class="ntab" onclick="show('exit',this)">&#10003; Exit ticket</button>
+  </div>
+
+  <!-- WARM-UP -->
+  <div id="spy" class="sec show">
+    <div class="time-badge">&#128336; 5 min</div>
+    <div class="block-label">Instrução para a professora</div>
+    <p class="notes">Diga às alunas: <em>"I'm going to say a category. You have 30 seconds to point to or name as many things as you can!"</em> Escolha uma categoria abaixo e clique nos itens quando elas acertarem.</p>
+    <div class="spy-target" id="spy-label">Choose a scene below</div>
+    <div class="scene-btns">
+      <button class="scene-btn" onclick="loadScene('animals')">Animals</button>
+      <button class="scene-btn" onclick="loadScene('family')">Family</button>
+      <button class="scene-btn" onclick="loadScene('school')">School</button>
+      <button class="scene-btn" onclick="loadScene('body')">Body</button>
+      <button class="scene-btn" onclick="loadScene('food')">Food</button>
+    </div>
+    <div class="spy-scene" id="spy-scene">
+      <div style="font-size:13px;color:var(--text3);grid-column:1/-1;text-align:center;padding:1rem">Select a category above to start</div>
+    </div>
+    <div class="spy-score" id="spy-score"></div>
+  </div>
+
+  <!-- FLASHCARDS -->
+  <div id="flash" class="sec">
+    <div class="time-badge">&#128336; 15 min</div>
+    <div class="block-label">Instrução para a professora</div>
+    <p class="notes">Alterne entre as alunas: uma vê a palavra em inglês e tenta traduzir, a outra faz o caminho inverso. Clique no card para revelar. Use os filtros para focar em um tema.</p>
+    <div class="cat-filter" id="fc-filters"></div>
+    <div class="fc-area">
+      <div class="fc-card" id="fc-card" onclick="flipCard()">
+        <div class="fc-tag" id="fc-tag">category</div>
+        <div class="fc-word" id="fc-word">Loading...</div>
+        <div class="fc-pt" id="fc-pt">—</div>
+      </div>
+      <div class="fc-hint">Clique no card para revelar</div>
+      <div class="fc-counter" id="fc-counter"></div>
+      <div class="fc-controls">
+        <button class="btn" onclick="prevCard()">&#8592; Previous</button>
+        <button class="btn" onclick="nextCard()">Next &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRAMMAR -->
+  <div id="grammar" class="sec">
+    <div class="time-badge">&#128336; 20 min</div>
+    <div class="block-label">Instrução para a professora</div>
+    <p class="notes">Revise o quadro de referência com elas oralmente. Depois façam os exercícios juntas — Isabella faz os pares, Helena os ímpares (ou dividam como quiserem).</p>
+
+    <div class="block-label">Quadro de referência — to be + artigos</div>
+    <div class="ref-grid">
+      <div class="ref-col">
+        I <strong>am</strong> happy.<br>
+        You <strong>are</strong> my friend.<br>
+        He/She/It <strong>is</strong> funny.<br>
+        We/They <strong>are</strong> students.
+      </div>
+      <div class="ref-col">
+        I <strong>am not</strong> tired.<br>
+        She <strong>is not</strong> here.<br>
+        <strong>Are</strong> you ok? — Yes, I am.<br>
+        <strong>Is</strong> he tall? — No, he isn't.
+      </div>
+      <div class="ref-col">
+        <strong>a</strong> + consoante: a dog<br>
+        <strong>an</strong> + vogal: an apple<br>
+        <strong>the</strong> = específico: the cat<br>
+        plural: dogs, cats, boxes
+      </div>
+    </div>
+
+    <div class="block-label">Exercício 1 — Complete com am, is ou are</div>
+    <div class="gap-list" id="gap1-list"></div>
+    <button class="btn check-btn" onclick="checkGaps('gap1')">Check answers</button>
+
+    <div class="block-label" style="margin-top:1.5rem">Exercício 2 — a, an ou the?</div>
+    <div class="gap-list" id="gap2-list"></div>
+    <button class="btn check-btn" onclick="checkGaps('gap2')">Check answers</button>
+  </div>
+
+  <!-- TRUE OR FALSE -->
+  <div id="tf" class="sec">
+    <div class="time-badge">&#128336; 15 min</div>
+    <div class="block-label">Instrução para a professora</div>
+    <p class="notes">Leia cada frase em voz alta. As alunas respondem TRUE ou FALSE — e se for falso, corrigem a frase! Ex: <em>"Isabella is 12 years old."</em> → False! She is 11.</p>
+    <div class="tf-list" id="tf-list"></div>
+    <div class="tf-score" id="tf-score"></div>
+  </div>
+
+  <!-- EXIT TICKET -->
+  <div id="exit" class="sec">
+    <div class="time-badge">&#128336; 5 min</div>
+    <div class="block-label">Instrução para a professora</div>
+    <p class="notes">Cada aluna fala (ou escreve aqui) 2 frases sobre si mesma usando "I am" e "I have". Pode ser oral — use o campo como apoio visual.</p>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="exit-name">Isabella</div>
+      <div class="hint-pills">
+        <span class="hint-pill">I am ___</span>
+        <span class="hint-pill">I am not ___</span>
+        <span class="hint-pill">I have ___</span>
+        <span class="hint-pill">I love ___</span>
+      </div>
+      <textarea placeholder="Isabella writes her sentences here..."></textarea>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="exit-name">Helena</div>
+      <div class="hint-pills">
+        <span class="hint-pill">I am ___</span>
+        <span class="hint-pill">I am not ___</span>
+        <span class="hint-pill">I have ___</span>
+        <span class="hint-pill">I love ___</span>
+      </div>
+      <textarea placeholder="Helena writes her sentences here..."></textarea>
+    </div>
+
+    <div class="card">
+      <div class="block-label" style="margin-top:0">Notas da professora — observações diagnósticas</div>
+      <textarea style="min-height:70px" placeholder="O que ficou bem? O que precisamos reforçar nas próximas aulas?"></textarea>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+const scenes = {
+  animals:{label:"Name the animals!",items:[{e:"🐶",w:"dog"},{e:"🐱",w:"cat"},{e:"🐭",w:"mouse"},{e:"🐹",w:"hamster"},{e:"🐰",w:"rabbit"},{e:"🦊",w:"fox"},{e:"🐻",w:"bear"},{e:"🐼",w:"panda"},{e:"🐨",w:"koala"},{e:"🐸",w:"frog"},{e:"🐙",w:"octopus"},{e:"🐠",w:"fish"}]},
+  family:{label:"Name the family members!",items:[{e:"👩",w:"mother"},{e:"👨",w:"father"},{e:"👧",w:"sister"},{e:"👦",w:"brother"},{e:"👵",w:"grandmother"},{e:"👴",w:"grandfather"},{e:"👶",w:"baby"},{e:"🧑",w:"cousin"},{e:"👩‍❤️‍👨",w:"parents"},{e:"👪",w:"family"}]},
+  school:{label:"Name the school things!",items:[{e:"📚",w:"books"},{e:"✏️",w:"pencil"},{e:"📏",w:"ruler"},{e:"🎒",w:"backpack"},{e:"📝",w:"notebook"},{e:"🖊️",w:"pen"},{e:"📐",w:"set square"},{e:"🖍️",w:"crayon"},{e:"🗑️",w:"bin"},{e:"🖥️",w:"computer"}]},
+  body:{label:"Name the body parts!",items:[{e:"👁️",w:"eye"},{e:"👂",w:"ear"},{e:"👃",w:"nose"},{e:"👄",w:"mouth"},{e:"🦷",w:"teeth"},{e:"💪",w:"arm"},{e:"🦵",w:"leg"},{e:"🖐️",w:"hand"},{e:"🦶",w:"foot"},{e:"🫀",w:"heart"}]},
+  food:{label:"Name the food!",items:[{e:"🍎",w:"apple"},{e:"🍌",w:"banana"},{e:"🍕",w:"pizza"},{e:"🍔",w:"burger"},{e:"🥗",w:"salad"},{e:"🍰",w:"cake"},{e:"🥛",w:"milk"},{e:"🍪",w:"cookie"},{e:"🥪",w:"sandwich"},{e:"🍓",w:"strawberry"}]}
+};
+let spyFound=0,spyTotal=0;
+function loadScene(key){
+  const s=scenes[key];
+  document.getElementById('spy-label').textContent=s.label;
+  spyFound=0;spyTotal=s.items.length;
+  document.getElementById('spy-score').textContent='Found: 0 / '+spyTotal;
+  const sc=document.getElementById('spy-scene');
+  sc.innerHTML=s.items.map(it=>`<div class="spy-item" onclick="markFound(this,'${it.w}')"><span class="spy-emoji">${it.e}</span><span class="spy-word">${it.w}</span></div>`).join('');
+}
+function markFound(el,word){
+  if(el.classList.contains('found'))return;
+  el.classList.add('found');
+  spyFound++;
+  document.getElementById('spy-score').textContent='Found: '+spyFound+' / '+spyTotal+(spyFound===spyTotal?' — Amazing!':'');
+}
+
+const allCards=[
+  {w:"dog",pt:"cachorro",cat:"Animals"},{w:"cat",pt:"gato",cat:"Animals"},{w:"rabbit",pt:"coelho",cat:"Animals"},
+  {w:"fish",pt:"peixe",cat:"Animals"},{w:"bird",pt:"pássaro",cat:"Animals"},{w:"horse",pt:"cavalo",cat:"Animals"},
+  {w:"mother",pt:"mãe",cat:"Family"},{w:"father",pt:"pai",cat:"Family"},{w:"sister",pt:"irmã",cat:"Family"},
+  {w:"brother",pt:"irmão",cat:"Family"},{w:"grandmother",pt:"avó",cat:"Family"},{w:"grandfather",pt:"avô",cat:"Family"},
+  {w:"bedroom",pt:"quarto",cat:"Home"},{w:"kitchen",pt:"cozinha",cat:"Home"},{w:"bathroom",pt:"banheiro",cat:"Home"},
+  {w:"living room",pt:"sala",cat:"Home"},{w:"garden",pt:"jardim",cat:"Home"},
+  {w:"head",pt:"cabeça",cat:"Body"},{w:"eye",pt:"olho",cat:"Body"},{w:"ear",pt:"orelha",cat:"Body"},
+  {w:"nose",pt:"nariz",cat:"Body"},{w:"mouth",pt:"boca",cat:"Body"},{w:"arm",pt:"braço",cat:"Body"},
+  {w:"leg",pt:"perna",cat:"Body"},{w:"hand",pt:"mão",cat:"Body"},
+  {w:"happy",pt:"feliz",cat:"Adjectives"},{w:"sad",pt:"triste",cat:"Adjectives"},{w:"big",pt:"grande",cat:"Adjectives"},
+  {w:"small",pt:"pequeno/a",cat:"Adjectives"},{w:"funny",pt:"engraçado/a",cat:"Adjectives"},{w:"tall",pt:"alto/a",cat:"Adjectives"},
+  {w:"short",pt:"baixo/a",cat:"Adjectives"},{w:"beautiful",pt:"bonito/a",cat:"Adjectives"}
+];
+const cats=[...new Set(allCards.map(c=>c.cat))];
+let filteredCards=[...allCards],fcIdx=0,activeCats=new Set(cats);
+
+function buildFilters(){
+  const d=document.getElementById('fc-filters');
+  d.innerHTML=cats.map(c=>`<button class="cf-btn on" onclick="toggleCat('${c}',this)">${c}</button>`).join('');
+}
+function toggleCat(cat,btn){
+  if(activeCats.has(cat)){if(activeCats.size===1)return;activeCats.delete(cat);btn.classList.remove('on');}
+  else{activeCats.add(cat);btn.classList.add('on');}
+  filteredCards=allCards.filter(c=>activeCats.has(c.cat));
+  fcIdx=0;showCard();
+}
+function showCard(){
+  if(!filteredCards.length)return;
+  const c=filteredCards[fcIdx];
+  const card=document.getElementById('fc-card');
+  card.classList.remove('flipped');
+  document.getElementById('fc-tag').textContent=c.cat;
+  document.getElementById('fc-word').textContent=c.w;
+  document.getElementById('fc-pt').textContent=c.pt;
+  document.getElementById('fc-counter').textContent=(fcIdx+1)+' / '+filteredCards.length;
+}
+function flipCard(){document.getElementById('fc-card').classList.toggle('flipped');}
+function nextCard(){fcIdx=(fcIdx+1)%filteredCards.length;showCard();}
+function prevCard(){fcIdx=(fcIdx-1+filteredCards.length)%filteredCards.length;showCard();}
+buildFilters();showCard();
+
+const gap1=[
+  {before:"I",ans:"am",after:"a student."},
+  {before:"She",ans:"is",after:"twelve years old."},
+  {before:"We",ans:"are",after:"best friends."},
+  {before:"The dog",ans:"is",after:"not big."},
+  {before:"You",ans:"are",after:"very funny!"},
+  {before:"It",ans:"is",after:"cold today."},
+  {before:"They",ans:"are",after:"in the park."},
+  {before:"I",ans:"am",after:"not sad."}
+];
+const gap2=[
+  {before:"I have",ans:"a",after:"dog."},
+  {before:"She eats",ans:"an",after:"apple every day."},
+  {before:"",ans:"The",after:"cat is on the sofa."},
+  {before:"He has",ans:"an",after:"old book."},
+  {before:"There is",ans:"a",after:"bird in the tree."},
+  {before:"",ans:"The",after:"school is very big."},
+  {before:"I see",ans:"an",after:"elephant at the zoo."},
+  {before:"She is",ans:"a",after:"teacher."}
+];
+
+function buildGaps(data,id){
+  document.getElementById(id+'-list').innerHTML=data.map((g,i)=>`
+    <div class="gap-item">
+      <div class="gap-sentence">${g.before} <input class="gap-input" id="${id}-inp-${i}" placeholder="___" data-ans="${g.ans.toLowerCase()}"> ${g.after}</div>
+      <div class="gap-fb" id="${id}-fb-${i}"></div>
+    </div>`).join('');
+}
+buildGaps(gap1,'gap1');buildGaps(gap2,'gap2');
+
+function checkGaps(id){
+  const data=id==='gap1'?gap1:gap2;
+  data.forEach((_,i)=>{
+    const inp=document.getElementById(id+'-inp-'+i);
+    const fb=document.getElementById(id+'-fb-'+i);
+    const val=(inp.value||'').trim().toLowerCase();
+    const ans=inp.dataset.ans;
+    fb.style.display='block';
+    if(val===ans){fb.className='gap-fb ok';fb.textContent='Correct!';}
+    else{fb.className='gap-fb no';fb.textContent='The answer is: '+ans[0].toUpperCase()+ans.slice(1);}
+  });
+}
+
+const tfData=[
+  {s:"Isabella is 12 years old.",ans:false,fix:"Isabella is 11 years old."},
+  {s:"Helena is older than Isabella.",ans:true,fix:""},
+  {s:"A cat is an animal.",ans:true,fix:""},
+  {s:"The sun is small.",ans:false,fix:"The sun is big."},
+  {s:"I am a student.",ans:true,fix:""},
+  {s:"A elephant is small.",ans:false,fix:"An elephant is big. (also: 'a' should be 'an')"},
+  {s:"Dogs are animals.",ans:true,fix:""},
+  {s:"Helena is 11 years old.",ans:false,fix:"Helena is 12 years old."},
+  {s:"An apple is a vegetable.",ans:false,fix:"An apple is a fruit."},
+  {s:"We are in English class.",ans:true,fix:""},
+];
+let tfScore=0,tfAnswered=0;
+function buildTF(){
+  document.getElementById('tf-list').innerHTML=tfData.map((t,i)=>`
+    <div class="tf-item">
+      <div class="tf-sentence">"${t.s}"</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="checkTF(${i},true)">True</button>
+        <button class="tf-btn" onclick="checkTF(${i},false)">False</button>
+      </div>
+      <div class="tf-result" id="tf-r-${i}"></div>
+    </div>`).join('');
+}
+function checkTF(i,choice){
+  const r=document.getElementById('tf-r-'+i);
+  if(r.style.display==='block')return;
+  r.style.display='block';
+  tfAnswered++;
+  if(choice===tfData[i].ans){tfScore++;r.className='tf-result correct';r.textContent='Correct!';}
+  else{r.className='tf-result wrong';r.textContent='False! '+(tfData[i].fix||'Think again!');}
+  document.getElementById('tf-score').textContent='Score: '+tfScore+' / '+tfAnswered;
+}
+buildTF();
+
+function show(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('show'));
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on'));
+  document.getElementById(id).classList.add('show');
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>
