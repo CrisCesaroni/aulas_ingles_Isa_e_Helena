@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level Up · Aula 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0F1E28;
+  --bg2:#162330;
+  --bg3:#1C2E3A;
+  --sky:#29BDE0;
+  --sky-mid:#5ACCE8;
+  --sky-light:#8DDCF0;
+  --sky-pale:#C2EEF8;
+  --amber:#E8A030;
+  --amber-light:#F5C870;
+  --amber-pale:#FEF0CC;
+  --white:#FFFFFF;
+  --cream:#F7F4EF;
+  --ink:#1A1A18;
+  --mid:#666;
+  --stone:#999;
+  --border-dark:rgba(41,189,224,.15);
+  --border-light:#D8EEF5;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);font-weight:300}
+
+.prog-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--sky),var(--amber));width:0%;z-index:200;transition:width .1s}
+
+.hdr{position:sticky;top:0;z-index:100;background:rgba(15,30,40,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-dark);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;font-weight:300;color:var(--sky);letter-spacing:-.5px}
+.hdr-badge{font-size:9px;font-weight:500;color:var(--sky);background:rgba(41,189,224,.12);padding:3px 10px;border-radius:10px;border:1px solid rgba(41,189,224,.25);letter-spacing:1px;text-transform:uppercase}
+
+.page{max-width:520px;margin:0 auto;padding:0 0 60px}
+
+.cover{background:linear-gradient(145deg,var(--bg),var(--bg3));padding:44px 22px 40px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;border-bottom:2px solid var(--sky)}
+.cover-tag{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:2px;color:var(--sky);background:rgba(41,189,224,.1);padding:5px 16px;border-radius:20px;border:1px solid rgba(41,189,224,.25)}
+.cover-title{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--white);line-height:1.05;letter-spacing:-1.5px}
+.cover-title span{color:var(--sky);font-style:italic}
+.cover-sub{font-size:13px;color:var(--stone);max-width:280px;line-height:1.6}
+.cover-badge{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid var(--border-dark);padding:8px 16px;border-radius:20px}
+.av{width:28px;height:28px;background:var(--sky);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#fff}
+.av2{width:28px;height:28px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#fff}
+.sname{font-size:12px;color:var(--stone);font-weight:400}
+
+.divider{height:3px;display:flex}
+.d1{flex:2;background:var(--sky)}
+.d2{flex:1.5;background:var(--sky-mid)}
+.d3{flex:1.5;background:var(--amber)}
+
+.sec{padding:24px 18px}
+.sec.dark{background:var(--bg2)}
+.sec.white{background:var(--white)}
+
+.sec-lbl{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;padding:3px 10px;border-radius:10px;display:inline-block;margin-bottom:8px}
+.lbl-sky{background:rgba(41,189,224,.15);color:var(--sky-light)}
+.lbl-amber{background:rgba(232,160,48,.15);color:var(--amber-light)}
+.lbl-dark{background:rgba(41,189,224,.12);color:var(--sky)}
+
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;line-height:1.2;margin-bottom:4px}
+.t-white{color:var(--white)}
+.t-dark{color:var(--ink)}
+.tap-hint{font-size:10px;font-style:italic;margin-bottom:12px}
+.th-dark{color:var(--stone)}
+.th-light{color:rgba(255,255,255,.5)}
+
+/* T/F */
+.tf-block{background:#fff;border-radius:10px;padding:13px 14px;border:1px solid var(--border-light);margin-top:14px}
+.tf-lbl{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:var(--stone);margin-bottom:8px}
+.tf-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid #EAF7FC;gap:8px}
+.tf-row:last-child{border:none}
+.tf-q{font-size:12px;color:var(--ink);flex:1;line-height:1.4}
+.tf-btns{display:flex;gap:4px;flex-shrink:0}
+.tf-btn{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;padding:4px 10px;border-radius:6px;border:1.5px solid var(--border-light);background:#fff;color:var(--stone);cursor:pointer;transition:.15s}
+.tf-btn.correct{background:var(--sky);color:#fff;border-color:var(--sky)}
+.tf-btn.wrong{background:#FEF0CC;color:var(--amber);border-color:var(--amber)}
+.tf-btn.dim{opacity:.25;pointer-events:none}
+
+/* RULE CARDS */
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.rule-card{background:rgba(255,255,255,.04);border-radius:10px;padding:12px 13px;border:1.5px solid var(--border-dark);cursor:pointer;transition:.15s}
+.rule-card.open{border-color:var(--sky);background:rgba(41,189,224,.08)}
+.rule-card:active{transform:scale(.97)}
+.rtag{font-size:8px;font-weight:500;color:var(--sky);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.rtitle{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--white);margin-bottom:4px}
+.rforms{font-size:11px;color:var(--stone);line-height:1.5}
+.rforms b{color:var(--sky-light)}
+.ex-bubble{display:none;margin-top:8px;padding:7px 10px;background:rgba(41,189,224,.08);border-radius:6px;border-left:2px solid var(--sky)}
+.ex-bubble.show{display:block}
+.ex-txt{font-size:11px;color:var(--sky-light);line-height:1.5}
+.full-card{grid-column:1/-1}
+.warn-box{background:rgba(232,160,48,.1);border-left:3px solid var(--amber);border-radius:0 8px 8px 0;padding:10px 13px;margin-top:12px}
+.w-lbl{font-size:9px;font-weight:500;color:var(--amber);text-transform:uppercase;margin-bottom:2px}
+.w-txt{font-size:12px;color:var(--amber-light);line-height:1.5}
+.w-txt b{color:var(--white)}
+
+/* FLASHCARDS */
+.cat-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.cf-btn{font-family:'DM Sans',sans-serif;font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-dark);background:rgba(255,255,255,.04);color:var(--stone);cursor:pointer;transition:.15s}
+.cf-btn.on{border-color:var(--sky);background:rgba(41,189,224,.1);color:var(--sky-light)}
+.fc-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.fc-card{width:100%;max-width:380px;min-height:150px;background:rgba(255,255,255,.05);border:1.5px solid var(--border-dark);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;cursor:pointer;transition:border-color .15s;text-align:center}
+.fc-card:hover{border-color:var(--sky)}
+.fc-cat{font-size:9px;font-weight:500;color:var(--sky);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.fc-word{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--white)}
+.fc-pt{font-size:15px;color:var(--stone);margin-top:10px;display:none}
+.fc-card.flipped .fc-pt{display:block}
+.fc-card.flipped .fc-word{color:var(--sky)}
+.fc-hint{font-size:10px;color:rgba(255,255,255,.25);font-style:italic}
+.fc-counter{font-size:11px;color:var(--stone)}
+.fc-controls{display:flex;gap:8px}
+.fc-btn{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:6px 16px;border-radius:20px;border:1px solid var(--border-dark);background:rgba(255,255,255,.04);color:var(--stone);cursor:pointer;transition:.15s}
+.fc-btn:hover{border-color:var(--sky);color:var(--sky-light)}
+
+/* SPY */
+.spy-target{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--white);margin-bottom:12px;min-height:28px}
+.scene-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.scene-btn{font-family:'DM Sans',sans-serif;font-size:11px;padding:5px 14px;border-radius:20px;border:1px solid var(--border-dark);background:rgba(255,255,255,.04);color:var(--stone);cursor:pointer;transition:.15s}
+.scene-btn:hover{border-color:var(--sky);color:var(--sky-light)}
+.spy-scene{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.spy-item{background:rgba(255,255,255,.04);border:1px solid var(--border-dark);border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;transition:.15s;user-select:none}
+.spy-item:hover{border-color:var(--sky-mid)}
+.spy-item.found{border-color:var(--sky);background:rgba(41,189,224,.1)}
+.spy-emoji{font-size:24px;display:block;margin-bottom:4px}
+.spy-word{font-size:10px;color:var(--stone);display:none}
+.spy-item.found .spy-word{display:block;color:var(--sky-light);font-weight:500}
+.spy-score{font-size:11px;color:var(--stone);text-align:center;margin-top:10px;font-style:italic}
+
+/* GAP FILL */
+.gap-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.gap-item{background:rgba(255,255,255,.04);border:1px solid var(--border-dark);border-radius:10px;padding:12px 14px}
+.gap-sentence{font-size:14px;color:var(--white);line-height:1.9}
+.gap-input{border:none;border-bottom:1.5px solid var(--sky-mid);background:transparent;color:var(--sky-light);font-family:'DM Sans',sans-serif;font-size:14px;width:72px;text-align:center;padding:0 4px;outline:none}
+.gap-input:focus{border-bottom-color:var(--sky)}
+.gap-fb{font-size:11px;margin-top:8px;display:none;padding:5px 10px;border-radius:6px}
+.gap-fb.ok{background:rgba(41,189,224,.1);color:var(--sky-light)}
+.gap-fb.no{background:rgba(232,160,48,.1);color:var(--amber-light)}
+.check-btn{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:7px 18px;border-radius:20px;border:1.5px solid var(--sky);background:transparent;color:var(--sky);cursor:pointer;transition:.15s}
+.check-btn:hover{background:rgba(41,189,224,.1)}
+
+/* REF TABLE */
+.ref-block{background:rgba(255,255,255,.04);border:1px solid var(--border-dark);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.ref-hdr{background:rgba(41,189,224,.1);padding:7px 13px;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--sky)}
+.ref-cols{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--border-dark)}
+.ref-col{padding:12px 13px;border-right:1px solid var(--border-dark);font-size:12px;color:var(--stone);line-height:2}
+.ref-col:last-child{border:none}
+.ref-col b{color:var(--sky-light)}
+
+/* SPEAKING */
+.task-box{background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--border-light);margin-bottom:12px}
+.task-hdr{background:var(--sky);padding:10px 14px}
+.task-tag{font-size:10px;font-weight:500;letter-spacing:1px;color:var(--bg);text-transform:uppercase}
+.task-body{padding:14px}
+.task-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--ink);margin-bottom:6px}
+.task-desc{font-size:11.5px;color:var(--stone);line-height:1.6;margin-bottom:12px}
+.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.topic{background:#EAF7FC;border:1.5px solid var(--border-light);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--stone);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:6px}
+.topic.done{background:rgba(41,189,224,.1);border-color:var(--sky);color:var(--sky)}
+.tchk{width:16px;height:16px;border-radius:50%;border:1.5px solid #cde;display:flex;align-items:center;justify-content:center;font-size:9px;transition:.2s;flex-shrink:0;color:transparent}
+.topic.done .tchk{background:var(--sky);border-color:var(--sky);color:#fff}
+.hint-pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.hint-pill{font-size:10.5px;color:var(--sky-light);background:rgba(41,189,224,.08);border:1px solid rgba(41,189,224,.2);padding:3px 9px;border-radius:12px}
+
+/* RECAP */
+.recap-cover{background:linear-gradient(145deg,var(--bg),var(--bg3));padding:40px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;border-top:2px solid var(--sky)}
+.end-title{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:var(--white);line-height:1.1;letter-spacing:-1px}
+.end-title span{color:var(--sky);font-style:italic}
+.end-sub{font-size:13px;color:var(--stone);max-width:280px;line-height:1.6}
+.recap{background:rgba(255,255,255,.04);border:1px solid var(--border-dark);border-radius:12px;padding:14px 16px;width:100%;text-align:left}
+.r-lbl{font-size:9px;font-weight:500;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.ri{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.ri:last-child{border:none}
+.rdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.rtxt{font-size:12px;color:var(--stone)}
+.next-badge{background:rgba(232,160,48,.08);border:1px solid rgba(232,160,48,.2);border-radius:10px;padding:12px 16px;width:100%}
+.nb-lbl{font-size:9px;color:var(--amber);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.nb-txt{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--amber-light);font-weight:300}
+
+@keyframes popIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* PRINT BUTTON */
+.print-btn{display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:var(--sky);background:rgba(41,189,224,.1);border:1px solid rgba(41,189,224,.3);padding:6px 12px;border-radius:20px;cursor:pointer;transition:.15s;white-space:nowrap}
+.print-btn:hover{background:rgba(41,189,224,.18)}
+.print-btn svg{width:13px;height:13px;flex-shrink:0}
+
+/* PRINT STYLES */
+@media print{
+  .prog-bar,.hdr,.print-btn{display:none !important}
+  body{background:#fff !important;color:#1A1A18 !important}
+  .page{max-width:100% !important;padding:0 !important}
+  .sec.dark{background:#F5FBFE !important}
+  .sec-title.t-white,.sec-lbl.lbl-sky,.tap-hint.th-light{color:#0F1E28 !important}
+  .cover{background:#0F1E28 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cover-title,.fc-card,.rule-card,.gap-item,.scene-card .scene-hdr,.recap-cover,.recap{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .recap-cover{background:#0F1E28 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sec{padding:16px 14px !important;break-inside:avoid}
+  .divider,.rule-card,.gap-item,.tf-block,.fc-card{break-inside:avoid}
+  .spy-scene,.fc-wrap,.fc-controls,.cat-filter,.scene-btns{display:none !important}
+  .ref-block,.rule-grid,.gap-list,.tf-block{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="prog-bar" id="progBar"></div>
+
+<div class="hdr">
+  <div class="logo-text"><em>Level Up</em></div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <div class="hdr-badge">A1 · Revision</div>
+    <button class="print-btn" onclick="window.print()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+      Print / PDF
+    </button>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-tag">Aula 1 · Vocabulary &amp; Grammar</div>
+  <div class="cover-title">Nice to<br><span>meet you</span><br>again!</div>
+  <div class="cover-sub">Revisiting the words and grammar you already know.</div>
+  <div class="cover-badge">
+    <div class="av">I</div>
+    <div class="av2">H</div>
+    <div class="sname">Isabella &amp; Helena</div>
+  </div>
+</div>
+<div class="divider"><div class="d1"></div><div class="d2"></div><div class="d3"></div></div>
+
+<!-- WARM-UP: I SPY -->
+<div class="sec dark">
+  <span class="sec-lbl lbl-sky">Warm-up · 5 min</span>
+  <div class="sec-title t-white">I spy…</div>
+  <div class="tap-hint th-light">Choose a category. Name as many as you can!</div>
+
+  <div class="scene-btns">
+    <button class="scene-btn" onclick="loadScene('animals')">Animals</button>
+    <button class="scene-btn" onclick="loadScene('family')">Family</button>
+    <button class="scene-btn" onclick="loadScene('school')">School</button>
+    <button class="scene-btn" onclick="loadScene('body')">Body</button>
+    <button class="scene-btn" onclick="loadScene('food')">Food</button>
+  </div>
+  <div class="spy-target" id="spy-label">Pick a category above ↑</div>
+  <div class="spy-scene" id="spy-scene"></div>
+  <div class="spy-score" id="spy-score"></div>
+</div>
+<div class="divider"><div class="d1"></div><div class="d2"></div><div class="d3"></div></div>
+
+<!-- FLASHCARDS -->
+<div class="sec dark">
+  <span class="sec-lbl lbl-sky">Vocabulary · 15 min</span>
+  <div class="sec-title t-white">Flashcards</div>
+  <div class="tap-hint th-light">Tap the card to reveal. Take turns translating.</div>
+
+  <div class="cat-filter" id="fc-filters"></div>
+  <div class="fc-wrap">
+    <div class="fc-card" id="fc-card" onclick="flipCard()">
+      <div class="fc-cat" id="fc-cat">—</div>
+      <div class="fc-word" id="fc-word">Loading…</div>
+      <div class="fc-pt" id="fc-pt">—</div>
+    </div>
+    <div class="fc-hint">tap to reveal · tap again to flip back</div>
+    <div class="fc-counter" id="fc-counter"></div>
+    <div class="fc-controls">
+      <button class="fc-btn" onclick="prevCard()">← prev</button>
+      <button class="fc-btn" onclick="nextCard()">next →</button>
+    </div>
+  </div>
+</div>
+<div class="divider"><div class="d1"></div><div class="d2"></div><div class="d3"></div></div>
+
+<!-- GRAMMAR: TO BE + ARTICLES -->
+<div class="sec dark">
+  <span class="sec-lbl lbl-sky">Grammar · 20 min</span>
+  <div class="sec-title t-white">To be + Articles</div>
+  <div class="tap-hint th-light">Tap each rule card to see an example.</div>
+
+  <div class="ref-block">
+    <div class="ref-hdr">Quick reference</div>
+    <div class="ref-cols">
+      <div class="ref-col">
+        I <b>am</b><br>
+        You <b>are</b><br>
+        He/She <b>is</b><br>
+        We/They <b>are</b>
+      </div>
+      <div class="ref-col">
+        I <b>am not</b><br>
+        She <b>isn't</b><br>
+        <b>Are</b> you…?<br>
+        <b>Is</b> he…?
+      </div>
+      <div class="ref-col">
+        <b>a</b> + consonant<br>
+        <b>an</b> + vowel<br>
+        <b>the</b> = specific<br>
+        dogs / cats…
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-grid">
+    <div class="rule-card" onclick="toggleEx(this)">
+      <div class="rtag">Affirmative</div>
+      <div class="rtitle">I am…</div>
+      <div class="rforms">I <b>am</b> happy · She <b>is</b> tall · They <b>are</b> students</div>
+      <div class="ex-bubble"><div class="ex-txt">"I <b>am</b> 11 years old. She <b>is</b> my best friend."</div></div>
+    </div>
+    <div class="rule-card" onclick="toggleEx(this)">
+      <div class="rtag">Negative</div>
+      <div class="rtitle">I'm not…</div>
+      <div class="rforms">I <b>am not</b> tired · He <b>isn't</b> here · They <b>aren't</b> ready</div>
+      <div class="ex-bubble"><div class="ex-txt">"I <b>am not</b> sad today. He <b>isn't</b> in the classroom."</div></div>
+    </div>
+    <div class="rule-card" onclick="toggleEx(this)">
+      <div class="rtag">Question</div>
+      <div class="rtitle">Are you…?</div>
+      <div class="rforms"><b>Are</b> you ok? → Yes, I am.<br><b>Is</b> she here? → No, she isn't.</div>
+      <div class="ex-bubble"><div class="ex-txt">"<b>Are</b> you ready? — Yes, I <b>am</b>!"</div></div>
+    </div>
+    <div class="rule-card" onclick="toggleEx(this)">
+      <div class="rtag">Articles</div>
+      <div class="rtitle">a / an / the</div>
+      <div class="rforms"><b>a</b> dog · <b>an</b> apple · <b>the</b> cat (specific)</div>
+      <div class="ex-bubble"><div class="ex-txt">"I have <b>a</b> dog. She eats <b>an</b> apple. <b>The</b> dog is big."</div></div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <div class="w-lbl">Watch out</div>
+    <div class="w-txt">Use <b>an</b> before a vowel sound: an apple, an elephant, an hour.<br>Use <b>a</b> before a consonant sound: a dog, a cat, a university.</div>
+  </div>
+</div>
+<div class="divider"><div class="d1"></div><div class="d2"></div><div class="d3"></div></div>
+
+<!-- EXERCISES -->
+<div class="sec white">
+  <span class="sec-lbl lbl-dark">Practice · Fill in the gaps</span>
+  <div class="sec-title t-dark">Complete the sentences</div>
+  <div class="tap-hint th-dark">Type your answer and tap Check.</div>
+
+  <div style="font-size:11px;font-weight:500;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Exercise 1 — am, is or are?</div>
+  <div class="gap-list" id="gap1-list"></div>
+  <button class="check-btn" onclick="checkGaps('gap1')">Check answers</button>
+
+  <div style="font-size:11px;font-weight:500;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;margin:20px 0 8px">Exercise 2 — a, an or the?</div>
+  <div class="gap-list" id="gap2-list"></div>
+  <button class="check-btn" onclick="checkGaps('gap2')">Check answers</button>
+</div>
+<div class="divider"><div class="d1"></div><div class="d2"></div><div class="d3"></div></div>
+
+<!-- TRUE OR FALSE -->
+<div class="sec dark">
+  <span class="sec-lbl lbl-amber">Game · 15 min</span>
+  <div class="sec-title t-white">True or False?</div>
+  <div class="tap-hint th-light">Read each sentence. Tap T or F — if it's false, correct it!</div>
+
+  <div class="tf-block">
+    <div class="tf-lbl">Tap T or F</div>
+    <div class="tf-row">
+      <div class="tf-q">Isabella is 12 years old.</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="doTF(this,'F','T')">T</button>
+        <button class="tf-btn" onclick="doTF(this,'F','F')">F</button>
+      </div>
+    </div>
+    <div class="tf-row">
+      <div class="tf-q">Helena is older than Isabella.</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="doTF(this,'T','T')">T</button>
+        <button class="tf-btn" onclick="doTF(this,'T','F')">F</button>
+      </div>
+    </div>
+    <div class="tf-row">
+      <div class="tf-q">A cat is an animal.</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="doTF(this,'T','T')">T</button>
+        <button class="tf-btn" onclick="doTF(this,'T','F')">F</button>
+      </div>
+    </div>
+    <div class="tf-row">
+      <div class="tf-q">The sun is small.</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="doTF(this,'F','T')">T</button>
+        <button class="tf-btn" onclick="doTF(this,'F','F')">F</button>
+      </div>
+    </div>
+    <div class="tf-row">
+      <div class="tf-q">I am a student.</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="doTF(this,'T','T')">T</button>
+        <button class="tf-btn" onclick="doTF(this,'T','F')">F</button>
+      </div>
+    </div>
+    <div class="tf-row">
+      <div class="tf-q">"A elephant" is correct English.</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="doTF(this,'F','T')">T</button>
+        <button class="tf-btn" onclick="doTF(this,'F','F')">F</button>
+      </div>
+    </div>
+    <div class="tf-row">
+      <div class="tf-q">Dogs are animals.</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="doTF(this,'T','T')">T</button>
+        <button class="tf-btn" onclick="doTF(this,'T','F')">F</button>
+      </div>
+    </div>
+    <div class="tf-row">
+      <div class="tf-q">Helena is 11 years old.</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="doTF(this,'F','T')">T</button>
+        <button class="tf-btn" onclick="doTF(this,'F','F')">F</button>
+      </div>
+    </div>
+    <div class="tf-row">
+      <div class="tf-q">An apple is a vegetable.</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="doTF(this,'F','T')">T</button>
+        <button class="tf-btn" onclick="doTF(this,'F','F')">F</button>
+      </div>
+    </div>
+    <div class="tf-row">
+      <div class="tf-q">We are in English class right now.</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="doTF(this,'T','T')">T</button>
+        <button class="tf-btn" onclick="doTF(this,'T','F')">F</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"><div class="d1"></div><div class="d2"></div><div class="d3"></div></div>
+
+<!-- EXIT TICKET -->
+<div class="sec white">
+  <span class="sec-lbl lbl-dark">Exit ticket · 5 min</span>
+  <div class="sec-title t-dark">Your turn to speak</div>
+  <div class="tap-hint th-dark">Say 2 sentences about yourself. Use the hints below.</div>
+
+  <div class="task-box">
+    <div class="task-hdr"><span class="task-tag">Isabella</span></div>
+    <div class="task-body">
+      <div class="hint-pills">
+        <span class="hint-pill">I am ___</span>
+        <span class="hint-pill">I am not ___</span>
+        <span class="hint-pill">I have ___</span>
+        <span class="hint-pill">I love ___</span>
+      </div>
+      <div class="topic-grid">
+        <div class="topic" onclick="toggleTopic(this)"><div class="tchk">✓</div><span>Said sentence 1</span></div>
+        <div class="topic" onclick="toggleTopic(this)"><div class="tchk">✓</div><span>Said sentence 2</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-box">
+    <div class="task-hdr" style="background:var(--amber)"><span class="task-tag">Helena</span></div>
+    <div class="task-body">
+      <div class="hint-pills">
+        <span class="hint-pill">I am ___</span>
+        <span class="hint-pill">I am not ___</span>
+        <span class="hint-pill">I have ___</span>
+        <span class="hint-pill">I love ___</span>
+      </div>
+      <div class="topic-grid">
+        <div class="topic" onclick="toggleTopic(this)"><div class="tchk">✓</div><span>Said sentence 1</span></div>
+        <div class="topic" onclick="toggleTopic(this)"><div class="tchk">✓</div><span>Said sentence 2</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"><div class="d1"></div><div class="d2"></div><div class="d3"></div></div>
+
+<!-- RECAP -->
+<div class="recap-cover">
+  <div class="end-title">Well done,<br><span>Isabella &amp; Helena.</span></div>
+  <div class="end-sub">You remembered more than you thought!</div>
+  <div class="recap">
+    <div class="r-lbl">Today's recap</div>
+    <div class="ri"><div class="rdot" style="background:var(--sky)"></div><div class="rtxt">Named vocabulary across 5 topics: animals, family, school, body, food</div></div>
+    <div class="ri"><div class="rdot" style="background:var(--sky-mid)"></div><div class="rtxt">Reviewed to be — affirmative, negative and question forms</div></div>
+    <div class="ri"><div class="rdot" style="background:var(--amber)"></div><div class="rtxt">Practised articles: a, an, the</div></div>
+    <div class="ri"><div class="rdot" style="background:var(--amber-light)"></div><div class="rtxt">Played True or False with real sentences</div></div>
+    <div class="ri"><div class="rdot" style="background:var(--sky-light)"></div><div class="rtxt">Spoke 2 sentences about yourself</div></div>
+  </div>
+  <div class="next-badge">
+    <div class="nb-lbl">Next class</div>
+    <div class="nb-txt">Aula 2 — There is / There are · Prepositions of place</div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+// PROGRESS BAR
+window.addEventListener('scroll',()=>{
+  const el=document.documentElement;
+  const pct=(el.scrollTop/(el.scrollHeight-el.clientHeight))*100;
+  document.getElementById('progBar').style.width=pct+'%';
+},{passive:true});
+
+// I SPY
+const scenes={
+  animals:{label:'Name the animals!',items:[{e:'🐶',w:'dog'},{e:'🐱',w:'cat'},{e:'🐭',w:'mouse'},{e:'🐹',w:'hamster'},{e:'🐰',w:'rabbit'},{e:'🦊',w:'fox'},{e:'🐻',w:'bear'},{e:'🐼',w:'panda'},{e:'🐨',w:'koala'},{e:'🐸',w:'frog'},{e:'🐙',w:'octopus'},{e:'🐠',w:'fish'}]},
+  family:{label:'Name the family members!',items:[{e:'👩',w:'mother'},{e:'👨',w:'father'},{e:'👧',w:'sister'},{e:'👦',w:'brother'},{e:'👵',w:'grandmother'},{e:'👴',w:'grandfather'},{e:'👶',w:'baby'},{e:'🧑',w:'cousin'},{e:'👩‍❤️‍👨',w:'parents'},{e:'👪',w:'family'}]},
+  school:{label:'Name the school things!',items:[{e:'📚',w:'books'},{e:'✏️',w:'pencil'},{e:'📏',w:'ruler'},{e:'🎒',w:'backpack'},{e:'📝',w:'notebook'},{e:'🖊️',w:'pen'},{e:'📐',w:'set square'},{e:'🖍️',w:'crayon'},{e:'🗑️',w:'bin'},{e:'🖥️',w:'computer'}]},
+  body:{label:'Name the body parts!',items:[{e:'👁️',w:'eye'},{e:'👂',w:'ear'},{e:'👃',w:'nose'},{e:'👄',w:'mouth'},{e:'🦷',w:'teeth'},{e:'💪',w:'arm'},{e:'🦵',w:'leg'},{e:'🖐️',w:'hand'},{e:'🦶',w:'foot'},{e:'🫀',w:'heart'}]},
+  food:{label:'Name the food!',items:[{e:'🍎',w:'apple'},{e:'🍌',w:'banana'},{e:'🍕',w:'pizza'},{e:'🍔',w:'burger'},{e:'🥗',w:'salad'},{e:'🍰',w:'cake'},{e:'🥛',w:'milk'},{e:'🍪',w:'cookie'},{e:'🥪',w:'sandwich'},{e:'🍓',w:'strawberry'}]}
+};
+let spyFound=0,spyTotal=0;
+function loadScene(key){
+  const s=scenes[key];
+  document.getElementById('spy-label').textContent=s.label;
+  spyFound=0;spyTotal=s.items.length;
+  document.getElementById('spy-score').textContent='Found: 0 / '+spyTotal;
+  document.getElementById('spy-scene').innerHTML=s.items.map(it=>`<div class="spy-item" onclick="markFound(this)"><span class="spy-emoji">${it.e}</span><span class="spy-word">${it.w}</span></div>`).join('');
+}
+function markFound(el){
+  if(el.classList.contains('found'))return;
+  el.classList.add('found');
+  spyFound++;
+  document.getElementById('spy-score').textContent='Found: '+spyFound+' / '+spyTotal+(spyFound===spyTotal?' — Amazing!':'');
+}
+
+// FLASHCARDS
+const allCards=[
+  {w:'dog',pt:'cachorro',cat:'Animals'},{w:'cat',pt:'gato',cat:'Animals'},{w:'rabbit',pt:'coelho',cat:'Animals'},
+  {w:'fish',pt:'peixe',cat:'Animals'},{w:'bird',pt:'pássaro',cat:'Animals'},{w:'horse',pt:'cavalo',cat:'Animals'},
+  {w:'mother',pt:'mãe',cat:'Family'},{w:'father',pt:'pai',cat:'Family'},{w:'sister',pt:'irmã',cat:'Family'},
+  {w:'brother',pt:'irmão',cat:'Family'},{w:'grandmother',pt:'avó',cat:'Family'},{w:'grandfather',pt:'avô',cat:'Family'},
+  {w:'bedroom',pt:'quarto',cat:'Home'},{w:'kitchen',pt:'cozinha',cat:'Home'},{w:'bathroom',pt:'banheiro',cat:'Home'},
+  {w:'living room',pt:'sala',cat:'Home'},{w:'garden',pt:'jardim',cat:'Home'},
+  {w:'head',pt:'cabeça',cat:'Body'},{w:'eye',pt:'olho',cat:'Body'},{w:'ear',pt:'orelha',cat:'Body'},
+  {w:'nose',pt:'nariz',cat:'Body'},{w:'mouth',pt:'boca',cat:'Body'},{w:'arm',pt:'braço',cat:'Body'},
+  {w:'leg',pt:'perna',cat:'Body'},{w:'hand',pt:'mão',cat:'Body'},
+  {w:'happy',pt:'feliz',cat:'Adjectives'},{w:'sad',pt:'triste',cat:'Adjectives'},{w:'big',pt:'grande',cat:'Adjectives'},
+  {w:'small',pt:'pequeno/a',cat:'Adjectives'},{w:'funny',pt:'engraçado/a',cat:'Adjectives'},{w:'tall',pt:'alto/a',cat:'Adjectives'},
+  {w:'short',pt:'baixo/a',cat:'Adjectives'},{w:'beautiful',pt:'bonito/a',cat:'Adjectives'}
+];
+const cats=[...new Set(allCards.map(c=>c.cat))];
+let filtered=[...allCards],fcIdx=0,activeCats=new Set(cats);
+
+function buildFilters(){
+  document.getElementById('fc-filters').innerHTML=cats.map(c=>`<button class="cf-btn on" onclick="toggleCat('${c}',this)">${c}</button>`).join('');
+}
+function toggleCat(cat,btn){
+  if(activeCats.has(cat)){if(activeCats.size===1)return;activeCats.delete(cat);btn.classList.remove('on');}
+  else{activeCats.add(cat);btn.classList.add('on');}
+  filtered=allCards.filter(c=>activeCats.has(c.cat));fcIdx=0;showCard();
+}
+function showCard(){
+  if(!filtered.length)return;
+  const c=filtered[fcIdx];
+  document.getElementById('fc-card').classList.remove('flipped');
+  document.getElementById('fc-cat').textContent=c.cat;
+  document.getElementById('fc-word').textContent=c.w;
+  document.getElementById('fc-pt').textContent=c.pt;
+  document.getElementById('fc-counter').textContent=(fcIdx+1)+' / '+filtered.length;
+}
+function flipCard(){document.getElementById('fc-card').classList.toggle('flipped');}
+function nextCard(){fcIdx=(fcIdx+1)%filtered.length;showCard();}
+function prevCard(){fcIdx=(fcIdx-1+filtered.length)%filtered.length;showCard();}
+buildFilters();showCard();
+
+// GAP FILL
+const gap1=[
+  {before:'I',ans:'am',after:'a student.'},
+  {before:'She',ans:'is',after:'twelve years old.'},
+  {before:'We',ans:'are',after:'best friends.'},
+  {before:'The dog',ans:'is',after:'not big.'},
+  {before:'You',ans:'are',after:'very funny!'},
+  {before:'It',ans:'is',after:'cold today.'},
+  {before:'They',ans:'are',after:'in the park.'},
+  {before:'I',ans:'am',after:'not sad.'}
+];
+const gap2=[
+  {before:'I have',ans:'a',after:'dog.'},
+  {before:'She eats',ans:'an',after:'apple every day.'},
+  {before:'',ans:'The',after:'cat is on the sofa.'},
+  {before:'He has',ans:'an',after:'old book.'},
+  {before:'There is',ans:'a',after:'bird in the tree.'},
+  {before:'',ans:'The',after:'school is very big.'},
+  {before:'I see',ans:'an',after:'elephant at the zoo.'},
+  {before:'She is',ans:'a',after:'teacher.'}
+];
+function buildGaps(data,id){
+  document.getElementById(id+'-list').innerHTML=data.map((g,i)=>`
+    <div class="gap-item">
+      <div class="gap-sentence">${g.before} <input class="gap-input" id="${id}-${i}" placeholder="___" data-ans="${g.ans.toLowerCase()}"> ${g.after}</div>
+      <div class="gap-fb" id="${id}-fb-${i}"></div>
+    </div>`).join('');
+}
+buildGaps(gap1,'gap1');buildGaps(gap2,'gap2');
+function checkGaps(id){
+  const data=id==='gap1'?gap1:gap2;
+  data.forEach((_,i)=>{
+    const inp=document.getElementById(id+'-'+i);
+    const fb=document.getElementById(id+'-fb-'+i);
+    const val=(inp.value||'').trim().toLowerCase();
+    const ans=inp.dataset.ans;
+    fb.style.display='block';
+    if(val===ans){fb.className='gap-fb ok';fb.textContent='Correct!';}
+    else{fb.className='gap-fb no';fb.textContent='The answer is: '+ans[0].toUpperCase()+ans.slice(1);}
+  });
+}
+
+// TRUE OR FALSE
+function doTF(btn,correct,chosen){
+  const row=btn.closest('.tf-row');
+  const btns=row.querySelectorAll('.tf-btn');
+  btns.forEach(b=>{
+    b.classList.remove('correct','wrong','dim');
+    const val=b.textContent.trim();
+    if(chosen===correct){
+      if(val===correct)b.classList.add('correct');
+      else b.classList.add('dim');
+    }else{
+      if(val===correct)b.classList.add('correct');
+      else if(val===chosen)b.classList.add('wrong');
+    }
+    b.onclick=null;
+  });
+}
+
+// SPEAKING CHECKBOXES
+function toggleTopic(el){el.classList.toggle('done');}
+
+// RULE CARDS
+function toggleEx(card){
+  const bubble=card.querySelector('.ex-bubble');
+  const isOpen=bubble.classList.contains('show');
+  document.querySelectorAll('.ex-bubble').forEach(b=>b.classList.remove('show'));
+  document.querySelectorAll('.rule-card').forEach(c=>c.classList.remove('open'));
+  if(!isOpen){bubble.classList.add('show');card.classList.add('open');}
+}
+</script>
+
+</body>
+</html>
